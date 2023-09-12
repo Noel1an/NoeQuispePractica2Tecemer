@@ -1,39 +1,38 @@
-<%@page import="com.emergentes.modelo.Persona"%>
+<%@page import="com.emergentes.modelo.Tarea"%>
 <% 
-Persona reg = (Persona) request.getAttribute("miobjper");
+    Tarea tar=(Tarea)request.getAttribute("miobjtar");
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title></title>
     </head>
     <body>
-        <h1>Registro de persona</h1>
-        <form action="MainServlet" method="post">
-        <table>
-            <tr>
-                <td>Id</td>
-                <td><input type ="text" name="id" value="<%= reg.getId()%>" size="2" readonly></td>
-            </tr>
-            <tr>
-                <td>Nombres</td>
-                <td><input type="text" name="nombres" value="<%= reg.getNombres()%>"></td>
-            </tr>
-            <tr>
-                <td>Apellidos</td>
-                <td><input type="text" name="apellido" value="<%= reg.getApellidos()%>"></td>
-            </tr>
-            <tr>
-                <td>Edad</td>
-                <td><input type="text" name="edad" value="<%= reg.getEdad()%>"></td> 
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" value="Enviar"</td>
-            </tr>
-        </table>
-        </form>
+        <h1>Añade una Nueva Tarea</h1>
+         <h3>Noe Elmer Quispe Lipa</h3>
+         <form action="MainServlet" method="post">
+             <table border="0">
+                 <thead>
+                     <tr>
+                         <th>ID</th>
+                         <th><input type="text" name="id" 
+                          value="<%= tar.getId() %>" size="2" readonly=""></th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr>
+                         <td>Tarea</td>
+                         <td><input type="text" name="titulo" 
+                                    value="<%= tar.getTitulo() %>"></td>
+                     </tr>
+                     <tr>
+                         <td></td>
+                         <td><input type="submit" value="Actualizar"></td>
+                     </tr>
+                 </tbody>
+             </table>
+         </form>
     </body>
 </html>

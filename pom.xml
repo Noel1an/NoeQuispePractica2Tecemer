@@ -5,7 +5,7 @@
     <artifactId>TE_listapersonas</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>TE_listapersonas-1.0-SNAPSHOT</name>
+    <name>Prac.Emer2</name>
     
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

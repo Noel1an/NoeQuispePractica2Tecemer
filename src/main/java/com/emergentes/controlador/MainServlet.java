@@ -1,7 +1,7 @@
 
 package com.emergentes.controlador;
 
-import com.emergentes.modelo.Persona;
+import com.emergentes.modelo.Tarea;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -16,80 +16,94 @@ public class MainServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String op = request.getParameter("op");
-        Persona objper = new Persona();
+       String op=request.getParameter("op");
+        Tarea objtar =new Tarea();
         int id,pos;
-        HttpSession ses = request.getSession();
-        ArrayList<Persona> lista = (ArrayList<Persona>)ses.getAttribute("listaper");
-        switch (op){
+        
+        HttpSession ses=request.getSession();
+        ArrayList<Tarea> lista =(ArrayList<Tarea>)ses.getAttribute("listatar");
+        switch (op) {
             case "nuevo":
-                request.setAttribute("miobjper", objper);
-                request.getRequestDispatcher("editar.jsp").forward(request, response);
+                //enviar un objeto vacio a editar dato
+                request.setAttribute("miobjtar", objtar);
+                request.getRequestDispatcher("editar.jsp").
+                        forward(request,response);
                 break;
             case "editar":
-                id = Integer.parseInt(request.getParameter("id"));
-                pos= buscarPorIndice(request, id);
-                objper = lista.get(pos);
-                request.setAttribute("miobjper", objper);
-                request.getRequestDispatcher("editar.jsp").forward(request, response);
-                    break;
+                //envia un objeto a editar pero con contenido
+                id=Integer.parseInt(request.getParameter("id"));
+                pos = buscarIndice(request,id);
+                //obtener el objeto
+                objtar = lista.get(pos);
+                request.setAttribute("miobjtar", objtar);
+                request.getRequestDispatcher("editar.jsp").forward(request,
+                        response);
+                break;
             case "eliminar":
-                id = Integer.parseInt(request.getParameter("id"));
-                pos= buscarPorIndice(request, id);
-                if (pos >= 0) {
+                //enviar el registro de laa eliminar
+                id=Integer.parseInt(request.getParameter("id"));
+                //averiguar el objeto
+                
+                pos = buscarIndice(request,id);
+                if(pos  >=0){
                     lista.remove(pos);
                 }
-                request.setAttribute("listaper", lista);
+                //actualizar la lista
+                request.setAttribute("listatar", lista);
+                //enviamos al index
                 response.sendRedirect("index.jsp");
                 break;
             default:
+       
         }
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        HttpSession ses = request.getSession();
-        ArrayList <Persona> Lista = (ArrayList <Persona>)ses.getAttribute("listaper");
-        Persona objper = new Persona();
-        objper.setId(id);
-        objper.setNombres(request.getParameter("nombres"));
-        objper.setApellidos(request.getParameter("apellido"));
-        objper.setEdad(Integer.parseInt(request.getParameter("edad")));
+        HttpSession ses=request.getSession();
+        ArrayList<Tarea> lista =(ArrayList<Tarea>)ses.getAttribute("listatar");
+        Tarea objtar = new Tarea();
+        objtar.setId(id);
+        objtar.setTitulo(request.getParameter("titulo"));
         if(id==0){
-            int idNuevo=obtenerId(request);
-            objper.setId(idNuevo);
-            Lista.add(objper);
+            //nuevo
+            int idNuevo = obtenerId(request);
+            objtar.setId(idNuevo);
+            lista.add(objtar);
         }else{
-            int posicion = buscarPorIndice(request, id);
-            Lista.set(posicion, objper);
+            //edicion
+            int pos = buscarIndice(request,id);
+            lista.set(pos, objtar);
         }
-        request.setAttribute("listaper", Lista);
-        response.sendRedirect("index.jsp");
+        request.setAttribute("listatar", lista);//actualisa la lista
+        response.sendRedirect("index.jsp");//redireccion el control aindex
     }
-    public int buscarPorIndice (HttpServletRequest request, int id){
-        HttpSession ses = request.getSession();
-        ArrayList<Persona> lista = (ArrayList<Persona>) ses.getAttribute("listaper");
-        int pos = -1;
-        
-        if (lista != null) {
-            for( Persona ele: lista){
-                ++pos;
-            if( ele.getId()== id){
-                break;
-            }
-        }
-    }
-        return pos;
-    }
-    public int obtenerId(HttpServletRequest request){
-        HttpSession ses = request.getSession();
-        ArrayList <Persona> lista = (ArrayList<Persona>)ses.getAttribute("listaper");
-        int idn=0;
-        for (Persona ele: lista){
-            idn = ele.getId();
-        } 
-        return idn +1;
-    }
-        
+
+   public int buscarIndice(HttpServletRequest request,int id){
+       HttpSession ses=request.getSession();
+       ArrayList<Tarea> lista=(ArrayList<Tarea>)ses.getAttribute("listatar");
+       
+       int pos =-1;
+       if(lista != null){
+           for(Tarea ele : lista){
+               ++pos;
+               if(ele.getId()==id){
+                   break;
+               }
+           }
+       }
+       return pos;
+   }
+   
+   public int obtenerId(HttpServletRequest request){
+       HttpSession ses = request.getSession();
+       ArrayList<Tarea> lista=(ArrayList<Tarea>)ses.getAttribute("listatar");
+       //busca el ultimo id
+       int idn=0;
+       for(Tarea ele : lista){
+           idn = ele.getId();
+       }
+       return idn + 1;
+   }
 }
